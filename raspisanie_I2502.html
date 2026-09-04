@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание группы I2502ru</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --imp-color: #f43f5e;
+            --par-color: #10b981;
+            --common-color: #3b82f6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--accent);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Controls / Status Bar */
+        .status-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .week-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .week-badge {
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-imp {
+            background-color: rgba(244, 63, 94, 0.2);
+            color: #fb7185;
+            border: 1px solid var(--imp-color);
+        }
+
+        .badge-par {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid var(--par-color);
+        }
+
+        .toggle-btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* Schedule Layout */
+        .days-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .day-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .day-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pair-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pair-item {
+            display: flex;
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: flex-start;
+            gap: 1.25rem;
+            transition: background 0.2s ease;
+        }
+
+        .pair-item:last-child {
+            border-bottom: none;
+        }
+
+        .pair-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .pair-num {
+            min-width: 45px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        .pair-time {
+            min-width: 95px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            padding-top: 0.2rem;
+        }
+
+        .pair-details {
+            flex-grow: 1;
+        }
+
+        .pair-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.3rem;
+        }
+
+        .pair-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tag-imp {
+            background: rgba(244, 63, 94, 0.2);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.4);
+        }
+
+        .tag-par {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .tag-common {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .pair-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .pair-time {
+                min-width: auto;
+            }
+            .status-card {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .week-info {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Расписание занятий</h1>
+        <div class="subtitle">Группа I2502ru • ФМИ УСМ</div>
+    </header>
+
+    <div class="status-card">
+        <div class="week-info">
+            <span>Текущая неделя:</span>
+            <span id="week-badge" class="week-badge">...</span>
+        </div>
+        <button class="toggle-btn" onclick="toggleWeek()">Переключить неделю (ручной режим)</button>
+    </div>
+
+    <div class="days-grid">
+        <!-- Понедельник -->
+        <div class="day-card">
+            <div class="day-header">Понедельник</div>
+            <div class="pair-list">
+                <div class="pair-item">
+                    <div class="pair-num">I</div>
+                    <div class="pair-time">08:00 - 09:30</div>
+                    <div class="pair-details">
+                        <div class="pair-title">GA2D (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Т. Яцышина</span>
+                            <span>Ауд.: 251/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">II</div>
+                    <div class="pair-time">09:45 - 11:15</div>
+                    <div class="pair-details">
+                        <div class="pair-title">GA2D (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Т. Яцышина</span>
+                            <span>Ауд.: 213a/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">III</div>
+                    <div class="pair-time">11:30 - 13:00</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Dezv.WEB (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Б. Вишневский</span>
+                            <span>Ауд.: 326/4</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 4 пара отсутствует -->
+            </div>
+        </div>
+
+        <!-- Вторник -->
+        <div class="day-card">
+            <div class="day-header">Вторник</div>
+            <div class="pair-list">
+                <div class="pair-item">
+                    <div class="pair-num">II</div>
+                    <div class="pair-time">09:45 - 11:15</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Технологии программирования (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Г. Латул</span>
+                            <span>Ауд.: 213a/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item week-imp">
+                    <div class="pair-num">III</div>
+                    <div class="pair-time">11:30 - 13:00</div>
+                    <div class="pair-details">
+                        <div class="pair-title">GA2D (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-imp">Нечётная (imp)</span>
+                            <span>Преп.: Т. Яцышина</span>
+                            <span>Ауд.: 251/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">IV</div>
+                    <div class="pair-time">13:15 - 14:45</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Инновационное предпринимательство (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Н. Назар</span>
+                            <span>Ауд.: 528/3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Среда -->
+        <div class="day-card">
+            <div class="day-header">Среда</div>
+            <div class="pair-list">
+                <div class="pair-item">
+                    <div class="pair-num">II</div>
+                    <div class="pair-time">09:45 - 11:15</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Криптография и информационная безопасность (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: О. Сербу</span>
+                            <span>Ауд.: 401/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">III</div>
+                    <div class="pair-time">11:30 - 13:00</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Продвинутая WEB-разработка (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Н. Нартеа</span>
+                            <span>Ауд.: 213a/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">IV</div>
+                    <div class="pair-time">13:15 - 14:45</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Инновационное предпринимательство (семинар)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Группа 1 • Преп.: Д. Столер</span>
+                            <span>Ауд.: 214/4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Четверг -->
+        <div class="day-card">
+            <div class="day-header">Четверг</div>
+            <div class="pair-list">
+                <div class="pair-item">
+                    <div class="pair-num">III</div>
+                    <div class="pair-time">11:30 - 13:00</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Технологии программирования (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: И. Ангелова</span>
+                            <span>Ауд.: 219/4a</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item week-par">
+                    <div class="pair-num">IV</div>
+                    <div class="pair-time">13:15 - 14:45</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Инновационное предпринимательство (семинар)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-par">Чётная (par)</span>
+                            <span>Группа 1 • Преп.: Д. Столер</span>
+                            <span>Ауд.: 415/4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Пятница -->
+        <div class="day-card">
+            <div class="day-header">Пятница</div>
+            <div class="pair-list">
+                <div class="pair-item">
+                    <div class="pair-num">II</div>
+                    <div class="pair-time">09:45 - 11:15</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Базы данных (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Кр. Улману</span>
+                            <span>Ауд.: 401/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">III</div>
+                    <div class="pair-time">11:30 - 13:00</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Базы данных (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: Кр. Улману</span>
+                            <span>Ауд.: 218/4a</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item week-imp">
+                    <div class="pair-num">IV</div>
+                    <div class="pair-time">13:15 - 14:45</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Криптография и информационная безопасность (лекция)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-imp">Нечётная (imp)</span>
+                            <span>Преп.: О. Сербу</span>
+                            <span>Ауд.: 113/4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="pair-item">
+                    <div class="pair-num">V</div>
+                    <div class="pair-time">15:00 - 16:30</div>
+                    <div class="pair-details">
+                        <div class="pair-title">Криптография и ИБ (лабораторная)</div>
+                        <div class="pair-meta">
+                            <span class="tag tag-common">Все недели</span>
+                            <span>Преп.: И. Желясков</span>
+                            <span>Ауд.: 326/4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Определение номера недели (1-52) по ISO 8601
+    function getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+
+    let isOddWeek = getWeekNumber(new Date()) % 2 !== 0;
+
+    function updateScheduleDisplay() {
+        const badge = document.getElementById('week-badge');
+        const impItems = document.querySelectorAll('.week-imp');
+        const parItems = document.querySelectorAll('.week-par');
+
+        if (isOddWeek) {
+            badge.innerText = 'Нечётная (IMP)';
+            badge.className = 'week-badge badge-imp';
+            impItems.forEach(item => item.classList.remove('hidden'));
+            parItems.forEach(item => item.classList.add('hidden'));
+        } else {
+            badge.innerText = 'Чётная (PAR)';
+            badge.className = 'week-badge badge-par';
+            impItems.forEach(item => item.classList.add('hidden'));
+            parItems.forEach(item => item.classList.remove('hidden'));
+        }
+    }
+
+    function toggleWeek() {
+        isOddWeek = !isOddWeek;
+        updateScheduleDisplay();
+    }
+
+    // Первоначальная инициализация при загрузке страницы
+    updateScheduleDisplay();
+</script>
+
+</body>
+</html>
