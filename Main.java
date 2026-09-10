@@ -1,6 +1,4 @@
-class Student {
-	String name;
-	float laziness; // примитивный тип вместо Float
+class Student { String name; float laziness; // примитивный тип вместо Float
 	byte iq;        // примитивный тип вместо Byte
 	int exams;
 	int[] marks;    // стиль Java: тип[] имяПеременной
@@ -53,6 +51,27 @@ class Student {
 		}
 		System.out.println("\n");
 	}
+
+	boolean compaerLazyne(Student other) {
+		return this.laziness < other.laziness;
+	}
+
+	void compaerLazynesHuman(Student other) {
+		if (this.laziness < other.laziness) {
+			System.out.println("This student is less lazy than the other.");
+		} else {
+			System.out.println("This student is not less lazy than the other.");
+		}
+	}
+
+	static void compaerLazynesHumanStatic(Student A, Student B) {
+		if (A.laziness < B.laziness) {
+			System.out.println("This student is less lazy than the other.");
+		} else {
+			System.out.println("This student is not less lazy than the other.");
+		}
+	}
+
 
 	public static void main(String[] args) {
 		int studentCount = 18;
