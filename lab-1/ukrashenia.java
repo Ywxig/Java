@@ -148,14 +148,77 @@ class Decorations {
     public short getStoneCount() { return stoneCount; }
     public void setStoneCount(short stoneCount) { this.stoneCount = stoneCount; }
 
-    public float[] getMetalWeights() { return metalWeights; }
-    public void setMetalWeights(float[] metalWeights) { this.metalWeights = metalWeights; }
+    // ГЕТЕР для получения массива весов металлов
+    public float[] getMetalWeights() {
+        return metalWeights;
+    }
 
-    public double[] getStoneCarats() { return stoneCarats; }
-    public void setStoneCarats(double[] stoneCarats) { this.stoneCarats = stoneCarats; }
+    // СЕТЕР для установки весов металлов (зависит от metalCount)
+    public void setMetalWeights(float[] newWeights) {
+        // Шаг 1: Проверяем, что переданный массив не пустой
+        if (newWeights == null) {
+            return;
+        }
 
-    public double[] getStoneCosts() { return stoneCosts; }
-    public void setStoneCosts(double[] stoneCosts) { this.stoneCosts = stoneCosts; }
+        // Шаг 2: Обновляем число металлов (metalCount) в соответствии с длиной нового массива
+        this.metalCount = (byte) newWeights.length;
+
+        // Шаг 3: Создаем новый массив нужного размера в памяти объекта
+        this.metalWeights = new float[this.metalCount];
+
+        // Шаг 4: Копируем каждый элемент из переданного массива в наш массив
+        for (int i = 0; i < this.metalCount; i++) {
+            this.metalWeights[i] = newWeights[i];
+        }
+    }
+
+    // ГЕТЕР для получения массива каратов камней
+    public double[] getStoneCarats() {
+        return stoneCarats;
+    }
+
+    // СЕТЕР для установки каратов камней (зависит от stoneCount)
+    public void setStoneCarats(double[] newCarats) {
+        // Шаг 1: Проверка на null
+        if (newCarats == null) {
+            return;
+        }
+
+        // Шаг 2: Обновляем число камней (stoneCount) под размер нового массива
+        this.stoneCount = (short) newCarats.length;
+
+        // Шаг 3: Выделяем память под новый массив каратов
+        this.stoneCarats = new double[this.stoneCount];
+
+        // Шаг 4: Поэлементно копируем значения
+        for (int i = 0; i < this.stoneCount; i++) {
+            this.stoneCarats[i] = newCarats[i];
+        }
+    }
+
+    // ГЕТЕР для получения массива стоимостей камней
+    public double[] getStoneCosts() {
+        return stoneCosts;
+    }
+
+    // СЕТЕР для установки стоимостей камней (также зависит от stoneCount)
+    public void setStoneCosts(double[] newCosts) {
+        // Шаг 1: Проверка на null
+        if (newCosts == null) {
+            return;
+        }
+
+        // Шаг 2: Обновляем число камней (stoneCount), так как стоимость зависит от количества камней
+        this.stoneCount = (short) newCosts.length;
+
+        // Шаг 3: Выделяем память под новый массив стоимостей
+        this.stoneCosts = new double[this.stoneCount];
+
+        // Шаг 4: Копируем элементы
+        for (int i = 0; i < this.stoneCount; i++) {
+            this.stoneCosts[i] = newCosts[i];
+        }
+    }
 
     public int getUniqueNumber() { return uniqueNumber; }
     public void setUniqueNumber(int uniqueNumber) { this.uniqueNumber = uniqueNumber; }
@@ -235,14 +298,36 @@ class Decorations {
 class Main {
     public static void main(String[] args) {
         Decorations ring = new Decorations();
+        System.out.println("--- Исходное украшение ---");
         ring.echo();
-        ring.sumOfStones();
 
-        System.out.println("\n\nЗаполняем украшение с клавиатуры:");
-        Decorations userDecor = new Decorations();
-        userDecor.readFromKeyboard();
+        // Тестируем сеттеры (изменяем данные через set-методы)
+        System.out.println("\n--- Тестирование сеттеров (Setters) ---");
+        ring.setType("Браслет");
+        ring.setUniqueNumber(777);
+        ring.setOwnerName("Иван Иванов");
+        
+        // Сеттер металлов автоматически обновит metalCount
+        float[] newWeights = {25.4f, 10.1f, 5.5f};
+        ring.setMetalWeights(newWeights);
 
-        System.out.println("\nРезультат ввода:");
-        userDecor.echo();
+        // Сеттер карат автоматически обновит stoneCount
+        double[] newCarats = {3.1, 4.2};
+        ring.setStoneCarats(newCarats);
+
+        // Сеттер стоимости камней
+        double[] newCosts = {150000.0, 200000.0};
+        ring.setStoneCosts(newCosts);
+
+        System.out.println("\n--- Украшение после работы сеттеров ---");
+        ring.echo();
+
+        // Тестируем геттеры (получаем данные через get-методы)
+        System.out.println("\n--- Тестирование геттеров (Getters) ---");
+        System.out.println("Полученный тип через get: " + ring.getType());
+        System.out.println("Полученный номер через get: " + ring.getUniqueNumber());
+        System.out.println("Полученный владелец через get: " + ring.getOwnerName());
+        System.out.println("Полученное число металлов через get: " + ring.getMetalCount());
+        System.out.println("Полученное число камней через get: " + ring.getStoneCount());
     }
 }
