@@ -1,4 +1,7 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Random;
 
 class Decorations {
     // кол-во проданных украшений
@@ -226,43 +229,89 @@ class Decorations {
     public String getOwnerName() { return ownerName; }
     public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
 
-    // Функция заполнения всех полей с клавиатуры
-    public void readFromKeyboard() {
-        Scanner scanner = new Scanner(System.in); // экземпляр класса сканера для считывания с клавиотуры
-
-        System.out.print("Введите вид украшения: ");
-        type = scanner.next();
-
-        System.out.print("Введите уникальный номер: ");
-        uniqueNumber = scanner.nextInt();
-
-        System.out.print("Введите имя владельца: ");
-        scanner.nextLine(); // очистка буфера после nextInt()
-        ownerName = scanner.nextLine();
-
-        System.out.print("Введите число металлов (byte): ");
-        metalCount = scanner.nextByte();
-
-        System.out.print("Введите число камней (short): ");
-        stoneCount = scanner.nextShort();
-
-        metalWeights = new float[metalCount];
-        System.out.println("Введите вес " + metalCount + " металлов (через пробел):");
-        for (int i = 0; i < metalCount; i++) {
-            metalWeights[i] = scanner.nextFloat();
+    public static String inString() {
+        // function to read a string from the keyboard
+        String str = "";
+        BufferedReader box = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            str = box.readLine();
+            return str;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
+    }
 
-        stoneCarats = new double[stoneCount];
-        System.out.println("Введите каратность " + stoneCount + " камней (через пробел):");
-        for (int i = 0; i < stoneCount; i++) {
-            stoneCarats[i] = scanner.nextDouble();
-        }
+    public static int inInt(String str) {
+        return (Integer.valueOf(inString())).intValue();
+    }
 
+    public static float inFloat(String str) {
+        return (Float.valueOf(inString())).floatValue();
+    }
+
+    public static double inDouble(String str) {
+        return (Double.valueOf(inString())).doubleValue();
+    }
+
+    public static byte inByte(String str) {
+        return (Byte.valueOf(inString())).byteValue();
+    }
+
+    public void input() {
+        do {
+        System.out.println("Введите имя владельца:");
+        ownerName = inString();
+        } while (metalCount < 0);
+        do {
+        System.out.println("Введите количество металлов:");
+        metalCount = inByte(inString());
+        } while (metalCount <= 1 || metalCount > 127);
+        do {
+        System.out.println("Введите количество камней:");
+        stoneCount = inByte(inString());
+        } while (stoneCount < 0);
+
+        // дальше дял полученяи поля массивы
         stoneCosts = new double[stoneCount];
-        System.out.println("Введите стоимость " + stoneCount + " камней (через пробел):");
         for (int i = 0; i < stoneCount; i++) {
-            stoneCosts[i] = scanner.nextDouble();
+            do {
+                System.out.println("Введите стоимость камня " + (i + 1) + ":");
+                stoneCosts[i] = inDouble(inString());
+            } while (stoneCosts == null || stoneCosts.length != stoneCount);
         }
+
+        System.out.println("Введите вес камней:");
+        stoneCarats = new double[stoneCount];
+        for (int i = 0; i < stoneCount; i++) {
+            do {
+                stoneCarats[i] = inDouble(inString());
+            } while (stoneCarats == null || stoneCarats.length != stoneCount);
+        }
+
+        do {
+        System.out.println("Введите количество металлов:");
+        metalCount = inByte(inString());
+        } while (metalCount < 0);
+    }
+    // рандом дял инта
+    public int randomInt(int a, int b) {
+        int r = (new Random()).nextInt(b - a + 1) + a;
+        return r;
+    }
+
+    // рандом дял дроби
+    public double randomDouble(double a, double b) {
+        double r = (new Random()).nextDouble() * (b - a) + a;
+        return r;
+    }
+
+    // рандом дял негерации украшения
+    public void generateDecorations() {
+        String[] decorationTypes = {"Кольцо", "Пendant", "Кольцо", "Пendant", "Кольцо", "Пendant", "Кольцо", "Пendant", "Кольцо", "Пendant"};
+        Decorations decoration = new Decorations();
+        decoration.setType(decorationTypes[randomInt(0, 9)]);
+
     }
 
     public double sumOfStones() {
@@ -306,7 +355,7 @@ class Main {
         ring.setType("Браслет");
         ring.setUniqueNumber(777);
         ring.setOwnerName("Иван Иванов");
-        
+
         // Сеттер металлов автоматически обновит metalCount
         float[] newWeights = {25.4f, 10.1f, 5.5f};
         ring.setMetalWeights(newWeights);
@@ -329,5 +378,8 @@ class Main {
         System.out.println("Полученный владелец через get: " + ring.getOwnerName());
         System.out.println("Полученное число металлов через get: " + ring.getMetalCount());
         System.out.println("Полученное число камней через get: " + ring.getStoneCount());
+
+        // напишем функционал для ввода всех полей класса украшения
+
     }
 }

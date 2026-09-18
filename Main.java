@@ -73,6 +73,8 @@ class Student { String name; float laziness; // примитивный тип в
 	}
 
 
+
+
 	public static void main(String[] args) {
 		int studentCount = 18;
 		Student[] students = new Student[studentCount];
