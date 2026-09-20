@@ -59,8 +59,15 @@ class Decorations {
     Decorations(String type, byte metalCount, short stoneCount,
                 float[] metalWeights, double[] stoneCarats, double[] stoneCosts,
                 int uniqueNumber) {
-        this(type, metalCount, stoneCount, metalWeights, stoneCarats, stoneCosts,
-                uniqueNumber, "Неизвестно");
+                    this.type = type;
+                    this.metalCount = metalCount;
+                    this.stoneCount = stoneCount;
+                    this.metalWeights = copyFloatArray(metalWeights, metalCount);
+                    this.stoneCarats = copyDoubleArray(stoneCarats, stoneCount);
+                    this.stoneCosts = copyDoubleArray(stoneCosts, stoneCount);
+                    this.uniqueNumber = uniqueNumber;
+                    this.ownerName = "Unknown";
+                    totalCreated++;
     }
 
     // конструктор копирования
