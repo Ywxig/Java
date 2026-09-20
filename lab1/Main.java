@@ -146,7 +146,7 @@ class Decorations {
 
     //  вывод на экран
 
-    public void echo() {
+    public void printInfo() {
         System.out.println("Вид украшения: " + type);
         System.out.println("Уникальный номер: " + uniqueNumber);
         System.out.println("Владелец: " + ownerName);
@@ -412,7 +412,7 @@ public class Main {
         // 1. конструктор по умолчанию
         Decorations d1 = new Decorations();
         System.out.println(" Украшение 1 (конструктор по умолчанию) ");
-        d1.echo();
+        d1.printInfo();
         System.out.println();
 
         // 2. конструктор с параметрами и владельцем
@@ -424,7 +424,7 @@ public class Main {
                 2002, "Мария Ионеску"
         );
         System.out.println(" Украшение 2 (конструктор с параметрами и владельцем) ");
-        d2.echo();
+        d2.printInfo();
         System.out.println();
 
         // 3. конструктор с параметрами без владельца
@@ -436,21 +436,21 @@ public class Main {
                 3003
         );
         System.out.println(" Украшение 3 (конструктор без владельца) ");
-        d3.echo();
+        d3.printInfo();
         System.out.println();
 
         // 4. конструктор копирования
         Decorations d4 = new Decorations(d2);
         d4.setUniqueNumber(4004);
         System.out.println(" Украшение 4 (копия украшения 2) ");
-        d4.echo();
+        d4.printInfo();
         System.out.println();
 
         // 5. украшение со случайными полями
         Decorations d5 = new Decorations();
         d5.fillRandom();
         System.out.println(" Украшение 5 (случайные значения) ");
-        d5.echo();
+        d5.printInfo();
         System.out.println();
 
         // 6. украшение с клавиатуры
@@ -458,7 +458,7 @@ public class Main {
         System.out.println(" Украшение 6: введите данные с клавиатуры ");
         d6.input();
         System.out.println(" Украшение 6 (введено с клавиатуры) ");
-        d6.echo();
+        d6.printInfo();
         System.out.println();
 
         // сохраняем каждое украшение в файл, имя файла = имя объекта
@@ -472,7 +472,7 @@ public class Main {
         // 7. конструктор, читающий украшение из файла
         Decorations d7 = new Decorations("d2.txt");
         System.out.println(" Украшение 7 (загружено из файла d2.txt) ");
-        d7.echo();
+        d7.printInfo();
         System.out.println();
 
         //клад
@@ -495,7 +495,7 @@ public class Main {
         System.out.println(" Содержимое клада ");
         for (int i = 0; i < treasure.length; i++) {
             System.out.println("Сокровище " + (i + 1) + ":");
-            treasure[i].echo();
+            treasure[i].printInfo();
             System.out.println();
         }
 
