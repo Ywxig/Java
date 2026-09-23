@@ -131,11 +131,21 @@ class Decorations {
         this.stoneCarats = copyDoubleArray(newCarats, this.stoneCount);
     }
 
+    public void setStoneCarat(int index, double carat) {
+        if (index < 0 || index >= stoneCount) return;
+        this.stoneCarats[index] = carat;
+    }
+
     public double[] getStoneCosts() { return stoneCosts; }
     public void setStoneCosts(double[] newCosts) {
         if (newCosts == null) return;
         this.stoneCount = (short) newCosts.length;
         this.stoneCosts = copyDoubleArray(newCosts, this.stoneCount);
+    }
+
+    public void setStoneCost(int index, double cost) {
+        if (index < 0 || index >= stoneCount) return;
+        this.stoneCosts[index] = cost;
     }
 
     public int getUniqueNumber() { return uniqueNumber; }
