@@ -124,6 +124,11 @@ class Decorations {
         this.metalWeights = copyFloatArray(newWeights, this.metalCount);
     }
 
+    public void setMetalWeight(int index, float weight) {
+        if (index < 0 || index >= metalCount) return;
+        this.metalWeights[index] = weight;
+    }
+
     public double[] getStoneCarats() { return stoneCarats; }
     public void setStoneCarats(double[] newCarats) {
         if (newCarats == null) return;
