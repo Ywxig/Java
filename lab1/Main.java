@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Random;
 
-
 // Класс "Ювелирное украшение"
 class Decorations {
 
@@ -112,10 +111,49 @@ class Decorations {
     public void setType(String type) { this.type = type; }
 
     public byte getMetalCount() { return metalCount; }
-    public void setMetalCount(byte metalCount) { this.metalCount = metalCount; }
+    public void setMetalCount(byte newMetalCount) {
+        if (newMetalCount > 0 && newMetalCount != metalCount && newMetalCount < 20) {
+            float[] tmp = new float[metalCount];
+            for (int i = 0; i < metalCount; i++) {
+                tmp[i] = metalWeights[i];
+            }
+            metalWeights = new float[newMetalCount];
+            int min = (metalCount < newMetalCount) ? metalCount : newMetalCount;
+            for (int i = 0; i < min; i++) {
+                metalWeights[i] = tmp[i];
+            }
+            metalCount = newMetalCount;
+        }
+    }
 
     public short getStoneCount() { return stoneCount; }
-    public void setStoneCount(short stoneCount) { this.stoneCount = stoneCount; }
+    public void setStoneCount(short newStoneCount) {
+        if (newStoneCount > 0 && newStoneCount != stoneCount && newStoneCount < 50) {
+            // Для carats
+            double[] tmpCarats = new double[stoneCount];
+            for (int i = 0; i < stoneCount; i++) {
+                tmpCarats[i] = stoneCarats[i];
+            }
+            stoneCarats = new double[newStoneCount];
+            int minC = (stoneCount < newStoneCount) ? stoneCount : newStoneCount;
+            for (int i = 0; i < minC; i++) {
+                stoneCarats[i] = tmpCarats[i];
+            }
+
+            // Для costs
+            double[] tmpCosts = new double[stoneCount];
+            for (int i = 0; i < stoneCount; i++) {
+                tmpCosts[i] = stoneCosts[i];
+            }
+            stoneCosts = new double[newStoneCount];
+            int minCo = (stoneCount < newStoneCount) ? stoneCount : newStoneCount;
+            for (int i = 0; i < minCo; i++) {
+                stoneCosts[i] = tmpCosts[i];
+            }
+
+            stoneCount = newStoneCount;
+        }
+    }
 
     public float[] getMetalWeights() { return metalWeights; }
     public void setMetalWeights(float[] newWeights) {
